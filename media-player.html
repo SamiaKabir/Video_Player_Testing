@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--
+// Sample Media Player using HTML5's Media API
+// 
+// Ian Devlin (c) 2012
+// http://iandevlin.com
+// http://twitter.com/iandevlin
+//
+// This was written as part of an article for the February 2013 edition of .net magazine (http://netmagazine.com/)
+-->
+<html lang='en'>
+	<head>
+		<meta charset='utf-8' />
+		<title>Tacos-Corpus Data</title>
+		<link href='media-player.css' rel='stylesheet' />
+		<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="http://d3js.org/d3.v4.min.js"></script>
+		<script src='media-player.js'></script>
+	</head>
+<body>
+	<h1>Tacos-Corpus Data</h1>
+	<div id='media-player'>
+		<video id='media-video' controls>
+			<source src='s22-d23.mp4' type='video/mp4'>
+			<!-- <source src='parrots.webm' type='video/webm'> -->
+		</video>
+		<div id='media-controls'>
+        <table>
+        	<tr>
+        		<td>
+
+			     <button id='play-pause-button' class='play' title='play' onclick='togglePlayPause();'>Play</button>
+			     <button id='stop-button' class='stop' title='stop' onclick='stopPlayer();'>Stop</button>
+			     <button id='replay-button' class='replay' title='replay' onclick='replayMedia();'>Replay</button>
+			    </td>	
+
+			    <td>
+				  &nbsp;&nbsp;&nbsp;&nbsp;
+			    </td>
+
+                <td>
+	<!-- for progress bar -->
+                 <div class="progress" id="progress-bar" onclick='changePos(event);'>
+                     <div class="progress-bar progress-bar-success" id='dynamic' role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+    	                 <span id="current-progress"></span>
+                     </div>
+                 </div>
+
+	<!-- for buttons -->
+	             <div id="segment">
+<!-- 	             	<button type="button" class="btn btn-primary active"  aria-pressed="false"></button>
+	             	<button type="button" class="btn btn-primary active"  aria-pressed="false"></button> -->
+	             </div>
+	            </td>
+            </tr>
+        </table>	 
+
+
+         </div>
+		<!-- </div> -->
+<!-- 		<div id='media-play-list'>
+			<h2>Play list</h2>
+			<ul id='play-list'>
+				<li><span class='play-item' onclick='loadVideo("parrots.webm", "parrots.mp4");'>Parrots</span></li>
+				<li><span class='play-item' onclick='loadVideo("paddle-wheel.webm", "paddle-wheel.mp4");'>Paddle Steamer Wheel</span></li>
+				<li><span class='play-item' onclick='loadVideo("grass.webm", "grass.mp4");'>Grass</span></li>
+			</ul>
+		</div> -->
+    </div>	
+
+<script>
+
+
+</script>
+</body>
+</html>
