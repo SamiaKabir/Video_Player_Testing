@@ -67,20 +67,18 @@ function initialiseMediaPlayer() {
 }
 
 function togglePlayPause() {
-	// If the mediaPlayer is currently paused or has ended
-	if (mediaPlayer.paused || mediaPlayer.ended) {
-		// Change the button to be a pause button
-		changeButtonType(playPauseBtn, 'pause');
-		// Play the media
-		mediaPlayer.play();
-	}
-	// Otherwise it must currently be playing
-	else {
-		// Change the button to be a play button
-		changeButtonType(playPauseBtn, 'play');
-		// Pause the media
-		mediaPlayer.pause();
-	}
+
+    var getIcon = document.getElementById('transportIcon');
+
+    if (getIcon.classList.contains('fa-play')) {
+        getIcon.classList.remove('fa-play');
+        getIcon.classList.add('fa-pause');
+        mediaPlayer.play();
+    } else {
+        getIcon.classList.remove('fa-pause');
+        getIcon.classList.add('fa-play');
+        mediaPlayer.pause();
+    }
 }
 
 function changePos(event) {
@@ -102,6 +100,15 @@ video.currentTime = (pos*video.duration);
 function stopPlayer() {
 	mediaPlayer.pause();
 	mediaPlayer.currentTime = 0;
+    var getIcon = document.getElementById('transportIcon');
+
+    if (getIcon.classList.contains('fa-play')) {
+        getIcon.classList.remove('fa-play');
+        getIcon.classList.add('fa-play');
+    } else {
+        getIcon.classList.remove('fa-pause');
+        getIcon.classList.add('fa-play');
+    }
 }
 
 // Changes the volume on the media player
@@ -109,22 +116,6 @@ function changeVolume(direction) {
 	if (direction === '+') mediaPlayer.volume += mediaPlayer.volume == 1 ? 0 : 0.1;
 	else mediaPlayer.volume -= (mediaPlayer.volume == 0 ? 0 : 0.1);
 	mediaPlayer.volume = parseFloat(mediaPlayer.volume).toFixed(1);
-}
-
-// Toggles the media player's mute and unmute status
-function toggleMute() {
-	if (mediaPlayer.muted) {
-		// Change the cutton to be a mute button
-		changeButtonType(muteBtn, 'mute');
-		// Unmute the media player
-		mediaPlayer.muted = false;
-	}
-	else {
-		// Change the button to be an unmute button
-		changeButtonType(muteBtn, 'unmute');
-		// Mute the media player
-		mediaPlayer.muted = true;
-	}
 }
 
 // Replays the media currently loaded in the player
@@ -145,14 +136,44 @@ function updateProgressBar() {
       .css("width", percentage + "%")
       .attr("aria-valuenow", percentage);
       // .text(percentage + "% Complete");
+     var div= document.getElementById('showTime');
+
+     div.innerHTML=(mediaPlayer.currentTime).toFixed(1)+"ms";
 
 }
 
 // Updates a button's title, innerHTML and CSS class to a certain value
 function changeButtonType(btn, value) {
 	btn.title = value;
-	btn.innerHTML = value;
-	btn.className = value;
+	// btn.innerHTML = value;
+	// btn.className = value;
+
+    var getIcon = document.getElementById('transportIcon');
+    
+    if(value=='pause'){
+    if (getIcon.classList.contains('fa-play')) {
+        getIcon.classList.remove('fa-play');
+        getIcon.classList.add('fa-pause');
+    } else {
+        getIcon.classList.remove('fa-pause');
+        getIcon.classList.add('fa-pause');
+    }
+   }
+
+    if(value=='play'){
+    if (getIcon.classList.contains('fa-play')) {
+        getIcon.classList.remove('fa-play');
+        getIcon.classList.add('fa-play');
+    } else {
+        getIcon.classList.remove('fa-pause');
+        getIcon.classList.add('fa-play');
+    }
+   }
+
+
+
+
+
 }
 
 // Loads a video item into the media player
@@ -185,18 +206,30 @@ function resetPlayer() {
 	// Move the media back to the start
 	mediaPlayer.currentTime = 0;
 	// Ensure that the play pause button is set as 'play'
-	changeButtonType(playPauseBtn, 'play');
+	// changeButtonType(playPauseBtn, 'play');
+	var getIcon = document.getElementById('transportIcon');
+
+    if (getIcon.classList.contains('fa-play')) {
+        getIcon.classList.remove('fa-play');
+        getIcon.classList.add('fa-pause');
+    } else {
+        getIcon.classList.remove('fa-pause');
+        getIcon.classList.add('fa-pause');
+    }
 }
 
-function segment_buttons()
-{
+function segment_buttons(){
 
+ var elmnt = document.getElementById("progress-bar");
+ // var w= elmnt.offsetWidth;
+ var w=300;
+ var h= 36;
 
  var start=[0.15,0.80,0.50];
  var end=[0.25,0.99,0.70];
  var data=[];
  var position=[];
- var	mPlayer = document.getElementById("media-video");
+ var mPlayer = document.getElementById("media-video");
  console.log(mPlayer.duration);
 
 for(var i=0;i<start.length;i++){
@@ -211,10 +244,10 @@ for(var i=0;i<start.length;i++){
 	// console.log(new_id);
 	// var x=(end[i]-start[i])*5;
     var percentage = Math.floor((100 / mPlayer.duration) * (start[i]*100));
-    position[i]=(percentage/100)*220;
+    position[i]=(percentage/100)*w;
     console.log(position[i]);
     percentage = Math.floor((100 / mPlayer.duration) * (end[i]*100));
-    temp=(percentage/100)*220;
+    temp=(percentage/100)*w;
     width=temp-position[i];
 
     obj.pos=position[i];
@@ -226,8 +259,7 @@ for(var i=0;i<start.length;i++){
 	// new_id.setAttribute('style', 'width:'+ x +'px; height: 16px; position: absolute; background: #f0ad4e;right:40%');
 }
 
-            var w= 220;
-            var h= 20;
+
             var svg= d3.select("#segment")
                         .append("svg")
                         .attr("width",w)
@@ -249,9 +281,6 @@ for(var i=0;i<start.length;i++){
             var doubleColor="#80002a"
 
 ;
-
-
-   
 
             //groups for each button (which will hold a rect and text)
             var buttonGroups= allButtons.selectAll("g.button")
@@ -279,37 +308,26 @@ for(var i=0;i<start.length;i++){
                                                 .attr("fill",defaultColor);
                                         }
                                     })
-                                    .on("dblclick",function(d,i){
+                                    // .on("dblclick",function(d,i){
                                         
-                                        updateButtonColors2(d3.select(this), d3.select(this.parentNode)); 
-                                        for(var i=0;i<5;i++)
-                                        {                               
-                                        loop_segment(d.start,d.end);
-                                        }
+                                    //     updateButtonColors2(d3.select(this), d3.select(this.parentNode)); 
+                                    //     for(var i=0;i<5;i++)
+                                    //     {                               
+                                    //     loop_segment(d.start,d.end);
+                                    //     }
 
 
-                                    })
+                                    // })
 
 
 
             var bWidth= 20; //button width
-            var bHeight= 10; //button height
+            var bHeight= 15; //button height
             var bSpace= 10; //space between buttons
             var x0= 20; //x offset
             var y0= 0; //y offset
 
 
-           //  buttonGroups.append("defs")
-           // .append("pattern")
-           // .attr("id", "bg")
-           // .append("image")
-           // .attr("xlink:href", "unlock.png")
-           // .attr("width",function(d){return d.width;})
-           // .attr("height",10)
-           // .attr("x",0)
-           // .attr("y",0);
-            //adding a rect to each toggle button group
-            //rx and ry give the rect rounded corner
             var Rect_buttons=buttonGroups.append("rect")
                         .attr("class","buttonRect")
                         .attr("width",function(d){return d.width;})
@@ -321,18 +339,44 @@ for(var i=0;i<start.length;i++){
                         .attr("fill",defaultColor);
                
 
+            
+            // var lock_buttons=svg.selectAll('circle').data(data).enter().append('circle')
+            //             .attr("class",'circle')
+            //             .attr("cx",function(d) {return d.pos+d.width-2;})
+            //             .attr("cy",20)
+            //             .attr("r",5) //rx and ry give the buttons rounded corners
+            //             .attr("fill",defaultColor)
+            //             .style("cursor","pointer")
+            //             .on("click",function(d,i) {
+            //                 for(var i=0;i<3;i++)
+            //                 {                               
+            //                    loop_segment(d.start,d.end);
+            //                 }
+            //             });
+            var lock_buttons=svg.selectAll('image').data(data).enter().append('image')
+                                .attr("xlink:href", "replay.png")
+                                .attr("x", function(d) {return d.pos+d.width-2;})
+                                .attr("y", "10")
+                                .attr("width", "12")
+                                .attr("height", "12")
+                                .on("click",function(d,i) {
+                                d3.select(this).attr("width","16").attr("height","16").attr("opacity",1);
+                                  for(var i=0;i<3;i++)
+                                    {                               
+                                       loop_segment(d.start,d.end);
+                                    }
+                                d3.select(this).attr("width","12").attr("height","12");
+                              });
 
 
+          //  // Append images
+          // var images = svg.selectAll('circle').append("image")
+          //              .attr("xlink:href", 'lock.png')
+          //              .attr('x',0)
+          //              .attr('y',0)
+          //              .attr("height", 10)
+          //              .attr("width", 10);
                      
-                     
-           //  Rect_buttons.append("i")
-           // .attr("class", function(d){ 
-           // return "icon fa fa-refresh fa-spin fa-3x fa-fw";
-           // })
-           // .attr("x",0)
-           // .attr("y",0)
-           // .attr("width",function(d){return d.width;})
-           // .attr("height", bHeight);
 
             function updateButtonColors(button, parent) {
                 parent.selectAll("rect")
@@ -349,11 +393,11 @@ for(var i=0;i<start.length;i++){
                 button.select("rect")
                         .attr("fill",doubleColor)
             }
+          
         
 }
 
-function change_segment(time,end)
-{
+function change_segment(time,end){
 
 var t1=0;
 var t2=0;
@@ -383,8 +427,8 @@ else
 
 }
 
-  vid.play();
-
+  // vid.play();
+vid.pause();
 
 t=d3.timer(timeOut);
 
@@ -397,7 +441,7 @@ t=d3.timer(timeOut);
   // var time_temp=vid.currentTime;
 
   if((vid.currentTime) >= t4){
-    // vid.pause();  
+    vid.pause();  
     t.stop();
     timer_return_value=true;
   }
@@ -440,8 +484,8 @@ else
  
 }
 
- vid.play();
-
+ // vid.play();
+vid.pause();
 t=d3.timer(timeOut);
 
  function timeOut(){
@@ -475,3 +519,16 @@ t=d3.timer(timeOut);
   // t.restart(timeOut);
 
 }
+
+// 	var t;
+
+// 	t=d3.timer(showTime)
+
+// function showTime()
+// {
+
+//    var div= document.getElementById('showTime');
+
+//    div.innerHTML=(mediaPlayer.currentTime).toFixed(1)+"ms";
+//    updateProgressBar();
+// }
